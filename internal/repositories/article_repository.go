@@ -7,14 +7,15 @@ type ArticleRepository interface {
 	GetArticleBySlug(slug string) (models.Article, error)
 }
 
-type articleRepository struct{}
-
-func (a articleRepository) GetAllArticles() ([]models.Article, error) {
-	//TODO implement me
-	panic("implement me")
+type ArticleRepositoryImplementation struct {
+	database
 }
 
-func (a articleRepository) GetArticleBySlug(slug string) (models.Article, error) {
+func (a ArticleRepositoryImplementation) GetAllArticles() ([]models.Article, error) {
+
+}
+
+func (a ArticleRepositoryImplementation) GetArticleBySlug(slug string) (models.Article, error) {
 	//TODO implement me
 	panic("implement me")
 }

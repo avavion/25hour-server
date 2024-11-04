@@ -10,16 +10,21 @@ type ArticleService interface {
 	GetArticleBySlug(slug string) (models.Article, error)
 }
 
-type articleService struct {
+type ArticleServiceImplementation struct {
 	articleRepository repositories.ArticleRepository
 }
 
-func (a articleService) GetAllArticles() ([]models.Article, error) {
-	//TODO implement me
-	panic("implement me")
+func (s *ArticleServiceImplementation) GetAllArticles() ([]models.Article, error) {
+	articles, err := s.articleRepository.GetAllArticles()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return articles, nil
 }
 
-func (a articleService) GetArticleBySlug(slug string) (models.Article, error) {
+func (s *ArticleServiceImplementation) GetArticleBySlug(slug string) (models.Article, error) {
 	//TODO implement me
 	panic("implement me")
 }
