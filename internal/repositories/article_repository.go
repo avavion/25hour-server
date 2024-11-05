@@ -1,21 +1,32 @@
 package repositories
 
-import "github.com/avavion/25hour-server/internal/models"
+import (
+	"github.com/avavion/25hour-server/internal/models"
+	"github.com/avavion/25hour-server/package/drivers/databases"
+)
 
-type ArticleRepository interface {
+type ArticleRepositoryInterface interface {
 	GetAllArticles() ([]models.Article, error)
 	GetArticleBySlug(slug string) (models.Article, error)
 }
 
-type ArticleRepositoryImplementation struct {
-	database
+type ArticleRepository struct {
+	database databases.DatabaseRepositoryInterface
 }
 
-func (a ArticleRepositoryImplementation) GetAllArticles() ([]models.Article, error) {
-
+func NewArticleRepository(database databases.DatabaseRepositoryInterface) ArticleRepositoryInterface {
+	return ArticleRepository{
+		database: database,
+	}
 }
 
-func (a ArticleRepositoryImplementation) GetArticleBySlug(slug string) (models.Article, error) {
+func (a ArticleRepository) GetAllArticles() ([]models.Article, error) {
+	return nil, nil
+
+	//return []models.Article{}, nil
+}
+
+func (a ArticleRepository) GetArticleBySlug(slug string) (models.Article, error) {
 	//TODO implement me
 	panic("implement me")
 }

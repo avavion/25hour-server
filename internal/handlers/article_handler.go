@@ -2,31 +2,45 @@ package handlers
 
 import (
 	"github.com/avavion/25hour-server/internal/services"
+	"github.com/avavion/25hour-server/package/response"
 	"net/http"
-	"strconv"
 )
 
+type ArticleHandlerInterface interface {
+	GetAllArticles(w http.ResponseWriter, r *http.Request)
+	GetArticleByID(w http.ResponseWriter, r *http.Request)
+}
+
 type ArticleHandler struct {
-	service services.ArticleService
+	service services.ArticleServiceInterface
 }
 
-func (h *ArticleHandler) GetAllArticles(w http.ResponseWriter, r *http.Request) {
-	articles, err := h.service.GetAllArticles()
-	if err != nil {
-		response.JSON(w, http.StatusInternalServerError, map[string]string{"error": "Unable to fetch articles"})
-		return
-	}
-	response.JSON(w, http.StatusOK, articles)
+func NewArticleHandler(service services.ArticleServiceInterface) ArticleHandlerInterface {
+	return &ArticleHandler{service: service}
 }
 
-func (h *ArticleHandler) GetArticleByID(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id, _ := strconv.Atoi(vars["id"])
+func (handler *ArticleHandler) GetAllArticles(w http.ResponseWriter, r *http.Request) {
+	articles, err := handler.service.GetAllArticles()
 
-	article, err := h.service.GetArticleByID(id)
-	if err != nil {
-		response.JSON(w, http.StatusNotFound, map[string]string{"error": "Article not found"})
+	if err == nil {
+		response.ToJson(w, map[string]string{
+			"error": "Not Found Articles",
+		}, 404)
+
 		return
 	}
-	response.JSON(w, http.StatusOK, article)
+
+	response.ToJson(w, articles, 200)
+}
+
+func (handler *ArticleHandler) GetArticleByID(w http.ResponseWriter, r *http.Request) {
+	//vars := mux.Vars(r)
+	//id, _ := strconv.Atoi(vars["id"])
+	//
+	//article, err := handler.service.GetArticleByID(id)
+	//if err != nil {
+	//	response.JSON(w, http.StatusNotFound, map[string]string{"error": "Article not found"})
+	//	return
+	//}
+	//response.JSON(w, http.StatusOK, article)
 }
